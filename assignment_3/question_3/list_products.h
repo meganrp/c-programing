@@ -2,11 +2,11 @@
 #define LISTPRODUCTS_H
 
 
-struct Product {
+struct t_product {
     int ID; 
     char Name[128]; 
     double Price; 
     int Quantity;
-};
+} ;
 
 #endif
