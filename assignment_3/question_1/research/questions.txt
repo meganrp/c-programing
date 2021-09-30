@@ -1,0 +1,18 @@
+1. How to print out a byte from a file in binary? (Possible Rabbit hole )
+
+1A. How to 
+
+2. How to read next byte from file? 
+By using a loop, we check with feof(ptr). Then read each byte into the buffer. 
+
+     while(feof(ptr) == 0) {
+        fread(&buffer, sizeof(buffer), 1, ptr); 
+        printf("read one byte, hopefully\n"); 
+    }
+
+3. How to know when we reach end of file? 
+We know we reach end of file using feof(ptr) just like above. 
+
+4. How to read each bit inside a byte? 
+
+

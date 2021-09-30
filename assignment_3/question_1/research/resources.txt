@@ -1,0 +1,48 @@
+reading a file in general:
+https://www.tutorialspoint.com/c_standard_library/c_function_fread.htm
+
+reading a file as binary: 
+https://stackoverflow.com/questions/17598572/read-and-write-to-binary-files-in-c
+
+Bitwise operators:
+https://www.guru99.com/c-bitwise-operators.html
+
+https://www.educative.io/courses/bit-manipulation/qANxozg6W5k
+
+
+input: 2 (how many bytes have the sequence of 2 (1's)) 
+
+
+10110110  - 2
+10110110  - 4
+10110110  - 6
+
+Output: 6 
+
+OR 
+
+(Is there a sequence of 2 (1's)) 
+
+we found a sequence of two inside and we will just return 2 
+
+
+Input: 2 
+
+11101111
+
+11011011
+
+
+Binary Number: 11111010
+Checking pairs
+============== 
+Sequence Counter: (4 / input) = output  
+
+Input: 2
+
+[11101110]
+
+if the sequenceCounter = numSequence then add 1 to output AND reset sequenceCounter to 0  (reset when it hits 0 as well)
+
+
+Output: 2 
