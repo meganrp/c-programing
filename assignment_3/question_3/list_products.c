@@ -1,14 +1,13 @@
-// C program for the above approach
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "list_products.h"
   
   
-// Driver Code
 int main( int argc, char *argv[] )
 {
-     FILE* fp = NULL;
-
+    FILE* fp = NULL;
+    
     if (argc == 2) {
       fp = fopen(argv[1], "r");
     }
@@ -18,9 +17,7 @@ int main( int argc, char *argv[] )
         return 0;
     }
 
-    int length = 500;
     char csvBuffer[1024];
-    int bit = 8;
         
     // Check file extension logic example 
     char *ext = strrchr(argv[1], '.');
@@ -28,23 +25,17 @@ int main( int argc, char *argv[] )
     printf("Printing Extension: %s\n", ext);
     printf("Str compare: %d\n", strcmp(ext, ".dat")); 
 
+    
+
     if (strcmp(ext, ".csv") == 0) {
         printf("CSV found!!!!\n");
 
-        //fread(csvBuffer, bit, length, fp);
-    
-
-            // Here we have taken size of
-        // array 1024 you can modify it
         int row = 0;
         int column = 0;
 
         while (fgets(csvBuffer, 1024, fp)) {
             row++;
 
-            // To avoid printing of column
-            // names in file can be changed
-            // according to need
             if (row == 1)
                 continue;
 
@@ -58,7 +49,7 @@ int main( int argc, char *argv[] )
 
             while (value) {
                 
-                printf("%5s  ", value);
+                printf("%8s  ", value);
                 value = strtok(NULL, ",");
                 column++;
             }
@@ -67,24 +58,25 @@ int main( int argc, char *argv[] )
         }
 
     }
+    
 
     if (strcmp(ext, ".dat") == 0) {
         printf("Binary file found here!!\n"); 
 
-        char check[4] = {'a', 'b', 'c', 'd'};
-        char *fileType;
-        //memset(check, 0, 4);
-        fread(check, 4, 1, fp);
-        printf("%c", check[0]);
-        fileType = check;
+        struct t_product *products = calloc(1, sizeof( struct t_product));
+    
+        fread(&products->ID, sizeof(int), 1, fp);
+        fread(&products->Name, sizeof(char[128]), 1, fp);
+        fread(&products->Price, sizeof(double), 1, fp);
+        fread(&products->Quantity, sizeof(int), 1, fp);
 
+        struct t_product *p = products;
+        printf("ID: %d\n", p->ID);
+        printf("Name: %s\n", p->Name);
+        printf("Price: %.2lf\n", p->Price);
+        printf("Quantity: %d\n", p->Quantity);
 
-        if (strcmp(fileType, 'CSEP') == 0) {
-            printf("Something is wrong with the file!");
-
-            return 0;
-        }
-
+        free(p);
 
     }
  
@@ -93,4 +85,5 @@ int main( int argc, char *argv[] )
     fclose(fp);
     
     return 0;
+    
 }
