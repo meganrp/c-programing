@@ -3,7 +3,7 @@
 
 #define BUFF 128
 
-struct {
+typedef struct {
     double *data;
     int size;
 } dynamic_array_t; 

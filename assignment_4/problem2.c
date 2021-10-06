@@ -14,13 +14,10 @@ int main(int argc, char** argv) {
         scanf("%d", &input);
 
         if (input == 1) {
-
-            
             void add();
         }
 
         else if (input == 2) {
-           
             void delete();
         }
 
@@ -39,33 +36,31 @@ int main(int argc, char** argv) {
 
 void add() {
 
-    double num_input = 0;
+    dynamic_array_t structArray[0];
+    double numInput = 0; 
+    dynamic_array_t* ptr = malloc(sizeof(dynamic_array_t));
     printf("Enter a number:  ");
-    scanf("%ld", &num_input);
+    scanf("%ld", ptr->data);
+ 
 
-    struct dynamic_array_t *dynamic = realloc(1, num_input * sizeof(struct dynamic_array_t));
+    struct dynamic_array_t *dynamic = realloc(ptr, numInput * sizeof(dynamic_array_t));
 
-    
-    //debug
-    printf("Input is %lf\n", num_input);
-    
-    //printf("%lf added at index %d, array size is %ld", &input, ??, sizeof(dynamic_array));
 
 }
 
 void delete() {
 
-    double index_input = 0;
+    double indexInput = 0;
     printf("Enter an index:  ");
-    scanf("ld", &index_input);
+    scanf("ld", &indexInput);
 
     //debug
-    printf("Input is %lf\n", index_input);
+    printf("Input is %lf\n", indexInput);
 
 
-    struct dynamic_array_t *dynamic = realloc(1, index_input * sizeof(struct dynamic_array_t));
+    //struct dynamic_array_t *dynamic = realloc(1, indexInput * sizeof(struct dynamic_array_t));
 
 
-    //printf("%lf removed from index %d, array size is %ld", &input, ??, sizeof(dynamic_array));
+    //printf("%lf removed from index %d, array size is %ld", &indexInput, dynamic_array_t.size, sizeof(dynamic_array_t));
 
 }
