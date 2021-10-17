@@ -146,7 +146,7 @@ vehicle_t *search_vehicle(FILE *fp, char* searchTerm) {
     // Also, we need to normalize the vehicle strings by lowercasting them for search accuracy. 
 
     // NORMALIZATION
-     char* searchNorm = NormalizeString(searchTerm);
+    char* searchNorm = NormalizeString(searchTerm);
     char* makeNorm = NormalizeString(v->make);
     char* modelNorm = NormalizeString(v->model);
     char* colorNorm = NormalizeString(v->color); 
@@ -194,9 +194,24 @@ void print_vehicle(vehicle_t *v) {
 }
 
 
-int main() {
+int main(int argc, char *argv[]) {
     // Open file, create file pointer
     FILE *fp = fopen("vehicles.db", "rb"); 
+    char* search = NULL;
+
+    if (argc == 3) {
+      fp = fopen(argv[1], "r");
+      if (!fp) {
+        printf("File not found!\n");
+        return 0;
+        }
+
+       search = argv[2];
+    } else {
+        printf("Invalid length of arguments.");
+        return 0;
+    }
+
     
     // Call read vehicle function, returns populated data.
     // vehicle_t *v1 = read_vehicle(fp); 
@@ -213,7 +228,7 @@ int main() {
     // print_vehicle(v5); 
     // print_vehicle(v6); 
 
-    char* search = "ford";
+    
     vehicle_t *v1 = NULL; 
 
     // I HATE MYSELF FOR THIS SECTION BUT I CAN'T FIGURE OUT HOW TO PROPERLY CHECK EOF WITH A LOOP. 
