@@ -5,6 +5,17 @@
 #include "problem1.h"
 
 
+char* NormalizeString(char* string) {
+    size_t len = strlen(string);
+    char *stringNorm = calloc(len+1, sizeof(char));
+
+    for (size_t i = 0; i < len; ++i) {
+        stringNorm[i] = tolower((unsigned char) string[i]);
+    }
+
+    return stringNorm;
+}
+
 vehicle_t *read_vehicle(FILE *fp) {
     // begin cursor 
     long begin = 0; 
@@ -81,7 +92,7 @@ vehicle_t *search_vehicle(FILE *fp, char* searchTerm) {
     // allocate memory for  vehicle pointer
     vehicle_t *v = calloc(1, sizeof(vehicle_t) * 10); 
 
-    printf("reading size... \n");
+    // printf("reading size... \n");
     // read the size field 
     fread(&v->size, sizeof(long), 1, fp); 
     // this is the file offset of when the data actually starts after size 
@@ -89,11 +100,11 @@ vehicle_t *search_vehicle(FILE *fp, char* searchTerm) {
     // have a null byte at the end. 
     begin = ftell(fp);
 
-    printf("reading year... \n");
+    // printf("reading year... \n");
     fread(&v->year, sizeof(int), 1, fp); 
 
     // Read Make 
-    printf("reading make... \n");
+    // printf("reading make... \n");
     long string_start = ftell(fp); 
     while (fgetc(fp) && !feof(fp)); 
     long string_end = ftell(fp); 
@@ -103,7 +114,7 @@ vehicle_t *search_vehicle(FILE *fp, char* searchTerm) {
     fread(v->make, sizeof(char), makeSize, fp);
 
     // READ MODEL 
-    printf("reading model... \n");
+    // printf("reading model... \n");
     string_start = ftell(fp); 
     while (fgetc(fp) && !feof(fp));  
     string_end = ftell(fp); 
@@ -113,7 +124,7 @@ vehicle_t *search_vehicle(FILE *fp, char* searchTerm) {
     fread(v->model, sizeof(char), modelSize, fp);
 
     // READ COLOR 
-    printf("reading color... \n");
+    // printf("reading color... \n");
     string_start = ftell(fp); 
     while (fgetc(fp) && !feof(fp)); 
     string_end = ftell(fp); 
@@ -123,7 +134,7 @@ vehicle_t *search_vehicle(FILE *fp, char* searchTerm) {
     fread(v->color, sizeof(char), colorSize, fp);
 
     // READ LICENSE PLATE 
-    printf("reading license... \n");
+    // printf("reading license... \n");
     string_start = ftell(fp); 
     int string_size = v->size - (string_start - begin); 
     // You add one since we didn't read any null byte, the above while loops read the null byte and is used to 
@@ -135,50 +146,51 @@ vehicle_t *search_vehicle(FILE *fp, char* searchTerm) {
     // Also, we need to normalize the vehicle strings by lowercasting them for search accuracy. 
 
     // NORMALIZATION
-    printf("Entering normalization...\n\n");
-    char* makeNorm = v->make;
-    char* modelNorm = v->model;
-    char* colorNorm = v->color; 
+     char* searchNorm = NormalizeString(searchTerm);
+    char* makeNorm = NormalizeString(v->make);
+    char* modelNorm = NormalizeString(v->model);
+    char* colorNorm = NormalizeString(v->color); 
 
-    printf("Normalizing search term...\n\n");
-    // normalize search term 
-    size_t len = strlen(searchTerm);
-    char *lower = calloc(len+1, sizeof(char));
-
-     for (size_t i = 0; i < len; ++i) {
-        lower[i] = tolower((unsigned char) searchTerm[i]);
-    }
-
-    printf("Comparing each string...\n\n");
+   
+    // printf("Comparing each string...\n\n");
     // Check each string 
-    if (strcmp(makeNorm, searchTerm) == 0) {
-        printf("Found match MAKE!\n");
+    if (strcmp(makeNorm, searchNorm) == 0) {
+        // printf("Found match MAKE!\n");
         return v; 
     }
     
-    if (strcmp(modelNorm, searchTerm) == 0) {
-        printf("Found match MODEL!\n");
+    if (strcmp(modelNorm, searchNorm) == 0) {
+        // printf("Found match MODEL!\n");
         return v; 
     }
 
-    if (strcmp(colorNorm, searchTerm) == 0) {
-        printf("Found match COLOR!\n");
+    if (strcmp(colorNorm, searchNorm) == 0) {
+        // printf("Found match COLOR!\n");
         return v; 
     }
 
     // free up the memory
-    free(lower);
+    free(searchNorm);
+    free(makeNorm);
+    free(modelNorm);
+    free(colorNorm);
+
     // Return nothing if there weren't any matches. RIP
     return NULL; 
 }
 
 void print_vehicle(vehicle_t *v) {
-    printf("Size: %ld\n", v->size); 
-    printf("Year: %d\n", v->year); 
-    printf("Make: %s\n", v->make); 
-    printf("Model: %s\n", v->model); 
-    printf("Color: %s\n", v->color); 
-    printf("License: %s\n\n", v->license_plate); 
+    if (v == NULL)
+        return; 
+
+    printf("%d %s %s %s LIC#%s\n", v->year, v->make, v->model, v->color, v->license_plate);
+
+    // printf("Size: %ld\n", v->size); 
+    // printf("Year: %d\n", v->year); 
+    // printf("Make: %s\n", v->make); 
+    // printf("Model: %s\n", v->model); 
+    // printf("Color: %s\n", v->color); 
+    // printf("License: %s\n\n", v->license_plate); 
 }
 
 
@@ -190,31 +202,57 @@ int main() {
     // vehicle_t *v1 = read_vehicle(fp); 
     // vehicle_t *v2 = read_vehicle(fp); 
     // vehicle_t *v3 = read_vehicle(fp); 
+    // vehicle_t *v4 = read_vehicle(fp); 
+    // vehicle_t *v5 = read_vehicle(fp); 
+    // vehicle_t *v6 = read_vehicle(fp); 
 
     // print_vehicle(v1); 
     // print_vehicle(v2); 
     // print_vehicle(v3); 
+    // print_vehicle(v4); 
+    // print_vehicle(v5); 
+    // print_vehicle(v6); 
 
-    char* search = "Ford";
+    char* search = "ford";
     vehicle_t *v1 = NULL; 
 
-    int counter = 1;
-    while(!feof(fp)) {
-        printf("counter: %d\n", counter);
-        v1 = search_vehicle(fp, search);
-        
-        if (v1 != NULL && !feof(fp)) {
-            print_vehicle(v1); 
-            printf("Took me %d vehicle(s) to go through.\n", counter);
-            break;
-        }
+    // I HATE MYSELF FOR THIS SECTION BUT I CAN'T FIGURE OUT HOW TO PROPERLY CHECK EOF WITH A LOOP. 
+    // Just getting frustrated, so going with this monstrosity.
+    // CHECK MY FIRST BRANCH. 
+    v1 = search_vehicle(fp, search);
+    print_vehicle(v1);
 
-        counter++; 
-    }
+    v1 = search_vehicle(fp, search);
+    print_vehicle(v1);
+
+    v1 = search_vehicle(fp, search);
+    print_vehicle(v1);
+
+    v1 = search_vehicle(fp, search);
+    print_vehicle(v1);
+
+    v1 = search_vehicle(fp, search);
+    print_vehicle(v1);
+
+    v1 = search_vehicle(fp, search);
+    print_vehicle(v1);
+
+    v1 = search_vehicle(fp, search);
+    print_vehicle(v1);
+
+    v1 = search_vehicle(fp, search);
+    print_vehicle(v1);
+
+    v1 = search_vehicle(fp, search);
+    print_vehicle(v1);
+
+    v1 = search_vehicle(fp, search);
+    print_vehicle(v1);
+
 
     fclose(fp);
     free(v1);
-    printf("End of program.\n counter: %d\n", counter);
+    printf("End of program.\n");
 
     return 0;
 }
