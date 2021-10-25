@@ -6,10 +6,8 @@ void enqueue();
 void dequeue(); 
 void show(); 
 
-int inp_arr[SIZE]; 
 int Rear = -1; 
 int Front = -1;
-int Count = 0;
 
 vehicle_t NewVehicle() {
     vehicle_t newVehicle; 
@@ -44,6 +42,7 @@ vehicle_t NewVehicle() {
     return newVehicle; 
 } 
 
+
 void EnqueueVehicle(vehicle_t* vehicleQueue) {
     if (Rear == SIZE - 1)
         printf("Overflow \n");
@@ -54,9 +53,9 @@ void EnqueueVehicle(vehicle_t* vehicleQueue) {
         Rear = Rear + 1; 
         vehicleQueue[Rear] = temp; 
         printf("Successfully added vehicle to queue. \n");
-        Count++; 
     }
 }
+
 
 void DequeueVehicle(vehicle_t* vehicleQueue) {
      if (Front == -1 || Front > Rear) {
@@ -64,8 +63,8 @@ void DequeueVehicle(vehicle_t* vehicleQueue) {
         return;
     } 
     else {
+        printf("Vehicle repaired!\n");
         Front = Front + 1; 
-        Count--;
     }
 }
 
@@ -106,9 +105,8 @@ void NextVehicle(vehicle_t* vehicleQueue) {
 }
 
 
-
 void ViewVehicleQueue(vehicle_t* vehicleQueue) {
-    if (Front > Rear)
+    if (Front > Rear || Front == -1)
         printf("No vehicles in queue. \n");
     else {
         int num = 0;
@@ -152,50 +150,10 @@ int main() {
                 exit(0);
             
             default: 
-                printf("Incorrect choice \n"); 
+                printf("Invalid Input \n"); 
 
         } 
     }
 
     return 0; 
-}
-
-
-void enqueue() {
-    int insert_item; 
-
-    if (Rear == SIZE - 1)
-        printf("Overflow \n");
-    else {
-        if (Front == -1)
-            Front = 0; 
-        printf("Element to be inserted in the Queue\n : "); 
-        scanf("%d", &insert_item); 
-        Rear = Rear + 1; 
-        inp_arr[Rear] = insert_item; 
-    }
-}
-
-void dequeue() {
-    if (Front == -1 || Front > Rear) {
-        printf("Underflow \n"); 
-        return ;
-    } 
-    else {
-        printf("Element deleted from the Queue: %d\n", inp_arr[Front]); 
-        Front = Front + 1; 
-    }
-}
-
-void show() {
-
-    if (Front == -1)
-        printf("Empty Queue \n");
-    else {
-        printf("Queue: \n"); 
-        
-        for (int i = Front; i <= Rear; i++)
-            printf("%d ", inp_arr[i]); 
-        printf("\n");
-    }
 }
