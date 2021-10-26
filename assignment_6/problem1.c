@@ -2,10 +2,6 @@
 
 #define SIZE 100
 
-void enqueue(); 
-void dequeue(); 
-void show(); 
-
 int Rear = -1; 
 int Front = -1;
 
@@ -154,6 +150,8 @@ int main() {
 
         } 
     }
+
+    free(vehicle_arr);
 
     return 0; 
 }
