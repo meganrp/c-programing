@@ -22,7 +22,6 @@ void push(char* stack, char data[80])
       {
             top = top + 1;
             strcpy(&stack[top], data);
-
             print_with_indent(space, &stack[top]);
             space += 3;
       }
@@ -34,7 +33,7 @@ void pop(char* stack, char data[80])
       if(top == -1)
             printf("Stack is empty!"); 
       else
-      {
+      { 
             strcpy(data, &stack[top]);
             top = top - 1;
             space -= 3;
@@ -48,7 +47,7 @@ int main(int argc, char **argv)
     // int top, reply;
     // top = -1;   // Initialize Stack
 
-    char* stack = (char*) malloc((max + 1) * sizeof(char)); 
+    char* stack = (char*) malloc((MAX_LINE_LENGTH) * sizeof(char)); 
     
 
     char *path;
@@ -92,10 +91,6 @@ int main(int argc, char **argv)
             pop(stack, line);
             
         }
-        
-        /* Add a trailing newline to lines that don't already have one */
-        if (line[strlen(line) - 1] != '\n')
-            printf("\n");
     }
     
     /* Close file */
