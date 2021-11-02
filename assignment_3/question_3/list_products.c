@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "list_products.h"
   
-  
 int main( int argc, char *argv[] )
 {
     FILE* fp = NULL;
