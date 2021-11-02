@@ -1,0 +1,17 @@
+Identify a function call vs a return [x] 
+- With each line read, check if it contains parenthesis [x]
+- With each line read, check if it contains a return [x]
+
+
+Print with proper indents [x]
+- increase indent when seeing a function [x]
+- decrease indent when seeing a return [x] 
+
+
+Create a string stack with malloc [] 
+And can be read! []
+Move space indententation within push and pop []
+
+Add push and pop functionality [] 
+- add line to stack during push [] 
+- remove line to stack during pop [] 
