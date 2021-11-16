@@ -22,7 +22,21 @@ typedef struct {
     hash_element_t **data;
 } dynamic_array_t;
 
+typedef struct {
+    dynamic_array_t **temp;
+    dynamic_array_t **primary;
+    int num_keys;
+    int temp_size;
+    int map_size;
+    int temp_index;
+    int r_value;
+} hash_map_t;
+
+int matches_key(const void *elema, char *key);
+void *find_item(dynamic_array_t *array, char *key, int (*check_fn)(const void *, char *));
+hash_element_t *search(hash_map_t *map, char *key);
 void print_map(dynamic_array_t **map, int array_size);
+void search_map(dynamic_array_t **map, int array_size, char *input);
 void print_array(dynamic_array_t *arr);
 void insert_item(dynamic_array_t **map, hash_element_t *item);
 void array_insert(dynamic_array_t *arr, hash_element_t *item);

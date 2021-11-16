@@ -21,8 +21,8 @@ double compute_load_factor(int num_keys, int bucket_size) {
     return (double)num_keys / bucket_size;
 }
 
-int matches_key(const void *elem, char *key) {
-    hash_element_t *hash_elem = (hash_element_t *) elem;
+int matches_key(const void *elema, char *key) {
+    hash_element_t *hash_elem = (hash_element_t *) elema;
     printf("[DEBUG] hash_map_utils.c::matches_key: hash_elem->key = %s, key = %s\n", hash_elem->key, key);
     return !strcmp(hash_elem->key, key);
 }
@@ -60,27 +60,27 @@ void resize_map(hash_map_t *map, double factor) {
 hash_element_t *search(hash_map_t *map, char *key) {
     if (map->temp != NULL) {
         int index = compute_index(key, map->temp_size);
-        dynamic_array_t *elem = map->temp[index];
+        dynamic_array_t *elema = map->temp[index];
 
-        if (elem == NULL) {
+        if (elema == NULL) {
             return NULL;
         }
 
 		// Search inside dynamic array to find the matching key
-        return find_item(elem, key, matches_key);
+        return find_item(elema, key, matches_key);
 
     } else if (map->primary != NULL) {
         int index = compute_index(key, map->map_size);
-        dynamic_array_t *elem = map->primary[index];
+        dynamic_array_t *elema = map->primary[index];
 
-        printf("[DEBUG] hash_map_utils.c::search: elem = %p\n", elem);
+        printf("[DEBUG] hash_map_utils.c::search: elem = %p\n", elema);
 
-        if (elem == NULL) {
+        if (elema == NULL) {
             return NULL;
         }
 
 		// Search inside dynamic array to find the matching key
-        return find_item(elem, key, matches_key);
+        return find_item(elema, key, matches_key);
     }
 
     return NULL;
@@ -109,13 +109,13 @@ void rehash_inc(hash_map_t *map) {
             return;
         }
 
-        hash_element_t *elem = pop_item(map->temp[map->temp_index], 0);
-        int index = compute_index(elem->key, map->map_size);
+        hash_element_t *elema = pop_item(map->temp[map->temp_index], 0);
+        int index = compute_index(elema->key, map->map_size);
 
-        insert_item(&map->primary[index], elem);
+        insert_item(&map->primary[index], elema);
         map->num_keys++;
 
-        printf("[DEBUG] Rehashing %s into %d\n", elem->key, index);
+        printf("[DEBUG] Rehashing %s into %d\n", elema->key, index);
 
         if (map->temp[map->temp_index]->size == 0) {
             free(map->temp[map->temp_index]);
@@ -127,19 +127,19 @@ void rehash_inc(hash_map_t *map) {
 /*
  * Inserts an element into the map bucket, represented by a dynamic_array_t.
  */
-void insert_item(dynamic_array_t **map, hash_element_t *elem) {
+void insert_item(dynamic_array_t **map, hash_element_t *elema) {
     if (*map == NULL) {
         *map = calloc(1, sizeof(dynamic_array_t));
     }
 
-    array_insert(*map, elem, -1);
+    array_insert(*map, elema, -1);
 }
 
 /*
  * Assumes that the element does not currently exist.
  */
-void insert(hash_map_t *map, hash_element_t *elem) {
-    int index = compute_index(elem->key, map->map_size);
+void insert(hash_map_t *map, hash_element_t *elema) {
+    int index = compute_index(elema->key, map->map_size);
 
     double factor = compute_load_factor(map->num_keys + 1, map->map_size);
 
@@ -151,10 +151,10 @@ void insert(hash_map_t *map, hash_element_t *elem) {
         resize_map(map, DEFAULT_RESIZE_FACTOR);
     }
 
-    printf("[DEBUG] Inserting %s at %d\n", elem->key, index);
+    printf("[DEBUG] Inserting %s at %d\n", elema->key, index);
 
     // TODO: Insert the item into the map at the calculated index
-    insert_item(&map->primary[index], elem);
+    insert_item(&map->primary[index], elema);
     map->num_keys++;
 
     rehash_inc(map);

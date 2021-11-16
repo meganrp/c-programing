@@ -15,13 +15,13 @@ int main() {
 
     while(1) {
 
-        printf("1. Add Vehicle\n2. Import File\n3. Vehicle Lookup\n4. Print Map\n(key = lisense plate)\n> ");
+        printf("1. Add Vehicle\n2. Import File\n3. Vehicle Lookup\n4. Print Map\n> ");
         scanf("%d", &input);
 
         switch (input) {
 
             case 1:
-                printf("Enter a key: ");
+                printf("(key = lisense plate)\nEnter a key: ");
                 getchar(); 
                 fgets(buffer, BUF_SIZE, stdin);
                 buffer[strlen(buffer) - 1] = 0;
@@ -76,7 +76,12 @@ int main() {
                 break;
 
             case 3:
-                break;
+                printf("Enter key you want to search: ");
+                getchar();
+                fgets(buffer, BUF_SIZE, stdin);
+                buffer[strlen(buffer) - 1] = 0;
+                search_map(map, MAP_SIZE, buffer);
+                break;                  
 
             case 4:
                 print_map(map, MAP_SIZE);
@@ -91,6 +96,64 @@ int main() {
         }
     }
 
+}
+
+int matches_key(const void *elem, char *key) {
+    hash_element_t *hash_elem = (hash_element_t *) elem;
+    printf("[DEBUG] hash_map_utils.c::matches_key: hash_elem->key = %s, key = %s\n", hash_elem->key, key);
+    return !strcmp(hash_elem->key, key);
+}
+
+void print_map(dynamic_array_t **map, int array_size) {
+    for (int i = 0; i < array_size; i++) {
+        printf("map[%d] = ", i);
+        if (map[i] != NULL) {
+            print_array(map[i]);
+        } else {
+            printf("EMPTY\n");
+        }
+    }
+}
+
+void search_map(dynamic_array_t **map, int array_size, char *input) {
+    printf("Input: %s\n", input);
+    for (int i = 0; i < array_size; i++) {
+        printf("map[%d] = ", i);
+        if (map[i] != NULL) {
+            print_array(map[i]);
+        } else {
+            printf("EMPTY\n");
+        }
+    }
+}
+
+hash_element_t *search(hash_map_t *map, char *key) {
+    if (map->temp != NULL) {
+        int index = compute_index(key, map->temp_size);
+        dynamic_array_t *elem = map->temp[index];
+
+        if (elem == NULL) {
+            return NULL;
+        }
+
+		// Search inside dynamic array to find the matching key
+        return find_item(elem, key, matches_key);
+
+    } else if (map->primary != NULL) {
+        int index = compute_index(key, map->map_size);
+        dynamic_array_t *elem = map->primary[index];
+
+        printf("[DEBUG] hash_map_utils.c::search: elem = %p\n", elem);
+
+        if (elem == NULL) {
+            return NULL;
+        }
+
+		// Search inside dynamic array to find the matching key
+        return find_item(elem, key, matches_key);
+    }
+
+    return NULL;
 }
 
 int hash_function(char *key) {
@@ -109,6 +172,18 @@ int compute_index(char *key, int array_size) {
     int index = hash % array_size;
     printf("index: %d\n", index);
     return index;
+}
+
+void *find_item(dynamic_array_t *array, char *key, int (*check_fn)(const void *, char *)) {
+    for (int i = 0; i < array->size; i++) {
+        // Taking advantage of the fact that `key` is the first member of the struct
+        if (check_fn(array->data[i], key)) {
+            printf("[DEBUG] dynamic_arrays.c::find_item: Found item %s\n", key);
+            return array->data[i];
+        }
+    }
+
+    return NULL;
 }
 
 void array_insert(dynamic_array_t *arr, hash_element_t *item) {
@@ -133,15 +208,4 @@ void print_array(dynamic_array_t *arr) {
     }
     temp = arr->data[arr->size - 1]->value;
     printf("{%s, %d, %s}\n", temp->license_plate, temp->year, temp->make);
-}
-
-void print_map(dynamic_array_t **map, int array_size) {
-    for (int i = 0; i < array_size; i++) {
-        printf("map[%d] = ", i);
-        if (map[i] != NULL) {
-            print_array(map[i]);
-        } else {
-            printf("EMPTY\n");
-        }
-    }
 }
