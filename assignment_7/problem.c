@@ -5,6 +5,7 @@
 
 // Macro format
 #define resize (R) ((R+1)/R)
+#define DEBUG(x) do { std::cerr << x; } while (0)
 
 
 int main() {
@@ -115,17 +116,6 @@ void print_map(dynamic_array_t **map, int array_size) {
     }
 }
 
-void search_map(dynamic_array_t **map, int array_size, char *input) {
-    printf("Input: %s\n", input);
-    for (int i = 0; i < array_size; i++) {
-        printf("map[%d] = ", i);
-        if (map[i] != NULL) {
-            print_array(map[i]);
-        } else {
-            printf("EMPTY\n");
-        }
-    }
-}
 
 hash_element_t *search(hash_map_t *map, char *key) {
     if (map->temp != NULL) {
@@ -202,10 +192,33 @@ void insert_item(dynamic_array_t **map, hash_element_t *item) {
 
 void print_array(dynamic_array_t *arr) {
     vehicle_t *temp = NULL;
-    for (int i = 0; i < arr->size - 1; i++) {
+    for (int i = 0; i <= arr->size - 1; i++) {
         temp = arr->data[i]->value;
         printf("{%s, %d, %s}, ", temp->license_plate, temp->year, temp->make);
     }
-    temp = arr->data[arr->size - 1]->value;
-    printf("{%s, %d, %s}\n", temp->license_plate, temp->year, temp->make);
+}
+
+void search_map(dynamic_array_t **map, int array_size, char *input) {
+    printf("Input: %s\n", input);
+
+    for (int i = 0; i < array_size; i++) {
+        printf("map[%d] = ", i);
+
+        if (map[i] != NULL) {
+            vehicle_t *temp = NULL;
+
+            for (int j = 0; j < map[i]->size - 1; j++) {
+                temp = map[i]->data[j]->value;
+                printf("{%s, %d, %s}, ", temp->license_plate, temp->year, temp->make);
+                
+                if(strcmp(input, temp->license_plate) == 0) {
+                    printf("Found a fuckin match ya'll\n");
+                }
+            }
+            print_array(map[i]);
+
+        } else {
+            printf("EMPTY\n");
+        }
+    }
 }
