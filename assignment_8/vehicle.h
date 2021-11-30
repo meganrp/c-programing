@@ -70,7 +70,7 @@ Vehicle::Vehicle() {
 
 ostream& operator<<(ostream& os, const Vehicle& v) {
              
-    os << v.year << " " << v.make << " " << v.model << " " << v.color << " " << v.license << endl;
+    os << v.year << " " << v.make << " " << v.model << " " << v.color << " " << v.license;
 
     return os;
 }
