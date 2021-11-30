@@ -1,3 +1,4 @@
+#include <fstream>
 #include "vehicle.h"
 
 
@@ -27,27 +28,61 @@ void PrintVehicles(vector<Vehicle> cars) {
     }
 }
 
+void PrintVehiclesCSV(vector<Vehicle> cars) {
+    
+    for (Vehicle v : cars) {
+        string csvData = v.toCSV(); 
+        cout << csvData << endl; 
+    }
+}
+
+vector<Vehicle> LoadVehicles() {
+    vector<Vehicle> carList;
+
+    string filename; 
+    cout << "Enter csv filename: "; 
+    cin >> filename; 
+
+    ifstream file (filename);
+    string line;
+    
+    if (file.is_open()) {
+
+        while (getline (file, line)) {
+            Vehicle tempCar = Vehicle(line); 
+
+            carList.push_back(tempCar);
+        }
+
+    } else {
+        cout << "Unable to find file.";
+    }
+
+    return carList;
+}
+
 int main(int argc, char *argv[]) {
 
-    vector<Vehicle> carList; 
- 
-    Vehicle car1 = Vehicle("2010,Kia,Sorinto,Grey,123abc");
-    cout << car1 << endl;
-    Vehicle car2 = NewVehicle();
-    Vehicle car3 = Vehicle("2010,Kia,Sorinto,Grey,123abc");
-
-    carList.push_back(car1);
-    carList.push_back(car2);
-    carList.push_back(car3);
+    vector<Vehicle> carList = LoadVehicles(); 
     
-    if (car1 == car3) {
-        cout << "Cars are the same" << endl;
-    }
-    else {
-        cout << "Cars are different" << endl;
-    }
+    // Vehicle car1 = Vehicle("2010,Kia,Sorinto,Grey,123abc");
+    // cout << car1 << endl;
+    // Vehicle car2 = NewVehicle();
+    // Vehicle car3 = Vehicle("2010,Kia,Sorinto,Grey,123abc");
+
+    // carList.push_back(car1);
+    // carList.push_back(car2);
+    // carList.push_back(car3);
+    
+    // if (car1 == car3) {
+    //     cout << "Cars are the same" << endl;
+    // }
+    // else {
+    //     cout << "Cars are different" << endl;
+    // }
 
     PrintVehicles(carList);
+    PrintVehiclesCSV(carList); 
 
     // string carThree = car3.toCSV();
     // cout << carThree << endl;
