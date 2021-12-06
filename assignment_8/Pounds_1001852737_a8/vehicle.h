@@ -7,7 +7,7 @@
 #include <sstream>
 
 
-using namespace::std;
+using namespace std;
 
 class Vehicle {
 
