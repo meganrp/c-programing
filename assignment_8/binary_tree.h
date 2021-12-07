@@ -20,14 +20,14 @@ class btree {
         void insertVehicle(vehicle_t car); 
 
         node *search(int key);
-        vehicle_t getVehicle(int key);
+        vehicle_t *getVehicle(int key);
  
     private:
         void nextVehicleNode(vehicle_t car, node *leaf);
         void insertNode(int key, node *leaf);
 
         node *search(int key, node *leaf);
-        vehicle_t getVehicleNode(int key, node *leaf); 
+        vehicle_t *getVehicleNode(int key, node *leaf); 
          
         node *root;
 };
@@ -38,8 +38,7 @@ btree::btree() {
 
 void btree::insertVehicle(vehicle_t car) {
   if(root != NULL)
-    //insertNode(key, root);
-    cout << "f u";
+    nextVehicleNode(car, root);
   else
   {
     // root node creation 
@@ -121,25 +120,41 @@ void btree::insertNode(int key, node *leaf) {
   }
 }
 
-vehicle_t btree::getVehicle(int key) {
+vehicle_t *btree::getVehicle(int key) {
   return getVehicleNode(key, root);
 }
 
-vehicle_t btree::getVehicleNode(int key, node *leaf) {
+vehicle_t *btree::getVehicleNode(int key, node *leaf) {
   if(leaf != NULL)
   {
+    cout << "Checking Node values!" << endl;
 
-    if(key == leaf->key_value)
-      return leaf->data;
+    if(key == leaf->key_value) {
+      cout << "Key is equal!\n";
+      cout << "Key: " << key << endl;
+      cout << "Leaf Key: " << leaf->key_value << endl;
+      return &leaf->data;
+    }
+      
 
-    if(key < leaf->key_value)
-      return getVehicleNode(leaf->data.year, leaf->left);
+    if(key < leaf->key_value){
+      cout << "Key is Less!\n";
+      cout << "Key: " << key << endl;
+      cout << "Leaf Key: " << leaf->key_value << endl;
+      return getVehicleNode(key, leaf->left);
+    }
+      
 
-    else
-      return getVehicleNode(leaf->data.year, leaf->right);
+    else {
+      cout << "Key is Greater!\n";
+      cout << "Key: " << key << endl;
+      cout << "Leaf Key: " << leaf->key_value << endl;
+      return getVehicleNode(key, leaf->right);
+    }
+
   }
 
-  else return NewVehicle();
+  else return NULL;
 }
 
 node *btree::search(int key) {

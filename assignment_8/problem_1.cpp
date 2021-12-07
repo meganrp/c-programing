@@ -37,12 +37,20 @@ int main(int argc, char** argv) {
 
 
     for (vehicle_t v: vehicleList) {
+        // cout << "inserting vehicle...\n"; 
+        // printVehicle(v);
         testing.insertVehicle(v);
     }
 
-    vehicle_t tempBinaryVehicle = NewVehicle(); 
-    tempBinaryVehicle = testing.getVehicle(2015);
-    printVehicle(tempBinaryVehicle);
+    vehicle_t *tempBinaryVehicle; 
+    tempBinaryVehicle = testing.getVehicle(2020);
+    if (tempBinaryVehicle == NULL) {
+        cout << "Vehicle is empty!";
+
+        return 0;
+    }
+
+    printVehicle(*tempBinaryVehicle);
 
 
    
