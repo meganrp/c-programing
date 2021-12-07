@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    btree testing = btree();
+    btree vehicleTree = btree();
 
     string line;
     ifstream myfile (argv[1]);
@@ -31,18 +31,18 @@ int main(int argc, char** argv) {
 
         myfile.close();
 
-    } else {
+    } 
+    else {
         cout << "Unable to open file"; 
     } 
 
     // insert each vehicle into the binary tree
     for (vehicle_t v: vehicleList) {
 
-        testing.insertVehicle(v);
+        vehicleTree.insertVehicle(v);
     }
 
     // Menu 
-
     int input = 0; 
     while (input != 3) {
         cout << "1. Traverse Tree" << endl; 
@@ -52,22 +52,23 @@ int main(int argc, char** argv) {
 
         switch (input) {
             case 1: 
-                // Call Traverse Tree 
+                vehicleTree.listVehicles(); 
                 break; 
+
             case 2: 
                 int yearInput; 
                 cout << "Enter year of vehicle: "; 
                 cin >> yearInput; 
 
                 vehicle_t *temp; 
-                temp = testing.getVehicle(yearInput); 
+                temp = vehicleTree.getVehicle(yearInput); 
 
                 if (temp != NULL) {
                     printVehicle(*temp); 
-                } else {
+                } 
+                else {
                     cout << "Vehicle not found." << endl; 
                 }
-
                 break; 
 
             case 3: 
