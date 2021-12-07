@@ -35,44 +35,49 @@ int main(int argc, char** argv) {
         cout << "Unable to open file"; 
     } 
 
-
+    // insert each vehicle into the binary tree
     for (vehicle_t v: vehicleList) {
-        // cout << "inserting vehicle...\n"; 
-        // printVehicle(v);
+
         testing.insertVehicle(v);
     }
 
-    vehicle_t *tempBinaryVehicle; 
-    tempBinaryVehicle = testing.getVehicle(2020);
-    if (tempBinaryVehicle == NULL) {
-        cout << "Vehicle is empty!";
+    // Menu 
 
-        return 0;
+    int input = 0; 
+    while (input != 3) {
+        cout << "1. Traverse Tree" << endl; 
+        cout << "2. Search" << endl; 
+        cout << "3. Exit" << endl;
+        cin >> input; 
+
+        switch (input) {
+            case 1: 
+                // Call Traverse Tree 
+                break; 
+            case 2: 
+                int yearInput; 
+                cout << "Enter year of vehicle: "; 
+                cin >> yearInput; 
+
+                vehicle_t *temp; 
+                temp = testing.getVehicle(yearInput); 
+
+                if (temp != NULL) {
+                    printVehicle(*temp); 
+                } else {
+                    cout << "Vehicle not found." << endl; 
+                }
+
+                break; 
+
+            case 3: 
+                cout << "Exiting Program." << endl; 
+                break;  
+            
+            default: 
+                cout << "Please enter a valid choice" << endl; 
+        }
     }
-
-    printVehicle(*tempBinaryVehicle);
-
-
-   
-    // cout << "What is the make: ";
-    // cin >> test.make;
-    // cout << "You have entered: " << test.make << endl;
-
-
-    // testing.insert(123);
-    // testing.insert(456);
-    // testing.insert(789);
-
-    // node *temp;
-    // temp = testing.search(654);
-    
-    // if (temp == NULL) {
-    //     cout << "Does not exist in data" << endl;
-    // }
-
-    // else {
-    //     cout << temp->key_value << endl;
-    // }
 
     return 0;
 }
