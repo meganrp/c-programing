@@ -2,27 +2,28 @@
 #define BTREE_VEHICLE_H
 
 #include <vector>
+#include <iostream>
 #include <string>
 #include <sstream>
 
 using namespace::std;
 
 struct vehicle_t {
-    char *make;
-    char *model;
-    char *color;
-    char *license_plate;
+    string make;
+    string model;
+    string color;
+    string license_plate;
     int year;
 };
 
 vehicle_t NewVehicle() {
-    int BUFFER = 1024; 
+    // int BUFFER = 1024; 
     vehicle_t temp = {};
 
-    temp.make = new char[BUFFER];
-    temp.model = new char[BUFFER];
-    temp.color = new char[BUFFER]; 
-    temp.license_plate = new char[BUFFER];
+    // temp.make = new char[BUFFER];
+    // temp.model = new char[BUFFER];
+    // temp.color = new char[BUFFER]; 
+    // temp.license_plate = new char[BUFFER];
 
     return temp;
 }
@@ -48,19 +49,19 @@ vehicle_t vehiclesCSV(string data) {
                 break;
 
             case 1:
-                temp.make = (char*)result.at(i).c_str();
+                temp.make = result.at(i);
                 break;
 
             case 2:
-                temp.model = (char*)result.at(i).c_str();
+                temp.model = result.at(i);
                 break;
 
             case 3:
-                temp.color = (char*)result.at(i).c_str();
+                temp.color = result.at(i);
                 break;
                 
             case 4:
-                temp.license_plate = (char*)result.at(i).c_str();
+                temp.license_plate = result.at(i);
                 break;
 
             default:
